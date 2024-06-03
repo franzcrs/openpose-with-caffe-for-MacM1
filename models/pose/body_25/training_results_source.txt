@@ -1,0 +1,3 @@
+# Model used in OP - Obtained from
+/media/posefs3b/Users/gines/openpose_train/training_results/Data_2017/BODY_25_or_23_CocoFoot/2_25YaserWholeBatch/
+
