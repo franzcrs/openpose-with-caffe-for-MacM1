@@ -54,7 +54,11 @@ bool ReadProtoFromBinaryFile(const char* filename, Message* proto) {
   CHECK_NE(fd, -1) << "File not found: " << filename;
   ZeroCopyInputStream* raw_input = new FileInputStream(fd);
   CodedInputStream* coded_input = new CodedInputStream(raw_input);
+#if __cplusplus < 201703L
   coded_input->SetTotalBytesLimit(kProtoReadBytesLimit, 536870912);
+#else
+  coded_input->SetTotalBytesLimit(kProtoReadBytesLimit);
+#endif
 
   bool success = proto->ParseFromCodedStream(coded_input);
 

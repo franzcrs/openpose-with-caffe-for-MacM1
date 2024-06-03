@@ -20,6 +20,8 @@ find_path(vecLib_INCLUDE_DIR vecLib.h
                 ${CMAKE_XCODE_DEVELOPER_DIR}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Versions/Current/Frameworks/vecLib.framework/Headers/
           NO_DEFAULT_PATH)
 
+set(vecLib_INCLUDE_DIR "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Versions/Current/Frameworks/vecLib.framework/Headers/")
+
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(vecLib DEFAULT_MSG vecLib_INCLUDE_DIR)
 

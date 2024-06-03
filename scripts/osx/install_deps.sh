@@ -1,5 +1,5 @@
 #!/bin/bash
-brew_packages="openblas snappy leveldb gflags glog szip lmdb hdf5 opencv protobuf boost cmake viennacl"
+brew_packages="openblas snappy leveldb gflags glog szip lmdb hdf5 opencv protobuf boost viennacl"
 for pkg in $brew_packages
 do
     echo "brew install $pkg || brew upgrade $pkg"
@@ -14,6 +14,6 @@ done
 pip_packages="numpy<1.17 opencv-python<4.3"
 for pkg in $pip_packages
 do
-    echo "sudo -H python2 -m pip install $pkg"
-    sudo -H python2 -m pip install "$pkg"
+    echo "sudo -H python -m pip install $pkg"
+    sudo -H python -m pip install "$pkg"
 done

@@ -1,3 +1,8 @@
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 ### VERSION INFO
 set(OpenPose_VERSION_MAJOR 1)
 set(OpenPose_VERSION_MINOR 7)
@@ -99,11 +104,11 @@ if (WIN32)
   set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /LTCG:incremental /OPT:REF /OPT:ICF")
 elseif (UNIX)
   # Turn on C++11
-  add_definitions(-std=c++11)
+  add_definitions(-std=c++17)
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 elseif (APPLE)
   # Turn on C++11
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 endif (WIN32)
 
@@ -867,6 +872,7 @@ endif (NOT ${WITH_EIGEN} MATCHES "NONE")
 
 if (APPLE)
   include_directories("/usr/local/opt/openblas/include")
+  include_directories("/opt/homebrew/opt/openblas/include")
 endif (APPLE)
 
 if (USE_MKL)
