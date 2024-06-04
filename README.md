@@ -1,6 +1,92 @@
+# Installation of OpenPose + Caffe in M1 chip Mac
+
 <div align="center">
     <img src=".github/Logo_main_black.png" width="300">
 </div>
+
+## Overview
+This repository was created for the only purpose of showing a successful method for installing the CMU Perceptual Computing Lab's [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose), commit `1d95a1a67f543ac76e6519941a3cfea55e2d5743 (openpose/master)` at the moment of creation, in `CPU_ONLY` mode with the linked Caffe version in a MacOS computer with M1 chip.
+
+Caffe's documentation requests a Python 2 version, but the usual environment manager on a Mac with an M1 chip doesn't support setting a 2.X version, leaving only the 3.X option. This demands the changes of some files.
+Additionally, the CMake files provided in the openpose repository (including caffe) did not come with the C++ compiler definitions and flags suitable for a smooth installation. Not finding the suitable C++ version while compiling the files produced various errors and time-consuming repairs during the build process. The highest C++ version required was C++17, therefore this version was set as default for the complete build.
+
+Below is a list of the common errors encountered by the community and experimented by your server.
+The changes done in the last [commit](https://github.com/franzcrs/openpose-with-caffe-for-MacM1/commit/e0e5833108d557d57ab825179f21f57444810c7e) `e0e5833 (this repo/master)` prevent these errors and guarantee a smooth build of OpenPose and Caffe.
+
+- [' C++ versions less than C++14 are not supported '](https://github.com/protocolbuffers/protobuf/issues/12393)
+- [' 'random_shuffle': is not a member of 'std' '](https://stackoverflow.com/questions/45013977/random-shuffle-is-not-a-member-of-std-error)
+- [' no member/type names 'xx' in namespace 'yy' (a) ](https://github.com/onnx/onnx/issues/5532)[(b)'](https://github.com/BVLC/caffe/issues/7078)
+- [' Could NOT find vecLib (missing: vecLib_INCLUDE_DIR) '](https://github.com/CMU-Perceptual-Computing-Lab/openpose/issues/1248)
+- [' 'cblas.h' file not found #include <cblas.h> '](https://github.com/CMU-Perceptual-Computing-Lab/openpose/issues/1942)
+
+
+**Disclaimer:**
+This repository and Caffe are a copy of the OpenPose repository and the contained caffe git submodule, therefore I do not own the content uploaded in this repository. Only the changes done in the commits with my sign (franzcrs) including [commit](https://github.com/franzcrs/openpose-with-caffe-for-MacM1/commit/e0e5833108d557d57ab825179f21f57444810c7e) `e0e5833 (this repo/master)` are of my authorship.
+
+## Instructions
+
+1. Creation of virtual environment. This assumes you already have a python environment manager. I work with miniforge3 and following the steps [here](https://github.com/mrdbourke/m1-machine-learning-test#how-to-setup-a-tensorflow-environment-on-m1-m1-pro-m1-max-using-miniforge-shorter-version)
+```
+conda create -n openpose python=3.9
+conda activate openpose
+```
+2. Download models from alternative [source](https://github.com/CMU-Perceptual-Computing-Lab/openpose/issues/1602#issuecomment-641653411)
+3. Open your terminal and clone this repository in the folder you wish
+```
+cd your/folder/path
+git clone https://github.com/franzcrs/openpose-with-caffe-for-MacM1
+```
+4. Copy the models in the corresponding folder (face, hand, pose) inside the repository `models/` folder
+5. Install Xcode Command Line Tools and homebrew if you haven't
+```
+xcode-select --install 
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew update
+```
+7. Install cmake cask
+```
+brew install --cask cmake
+```
+8. Install required dependencies in modified install_deps.sh
+```
+bash scripts/osx/install_deps.sh
+```
+9. Enter the repo folder and create a build folder
+```
+cd openpose-with-caffe-for-MacM1
+mkdir build
+cd build
+```
+10. Run cmake gui
+```
+cmake-gui ..
+```
+11. Make sure the folder paths point to the repository folder and the build folder. Image is example.
+        <img src=".github/media/installation/cmake_im_1.png" width="800">
+
+12. Make sure BUILD_CAFFE is checked and GPU_MODE is set as CPU_ONLY. Click on Configure. Then with the default options click Finish. The monitor should show:
+```
+Configuring done (x.xs)
+``` 
+13. Click on Generate. The monitor should show:
+```
+Generating done (x.xs)
+```
+14. Finally run make. (In case of error, you may want to activate the verbose, by adding `VERBOSE=1` at the end of the instruction)
+```
+make -j`sysctl -n hw.logicalcpu`
+```
+15. The installation should finish by showing in the terminal:
+```
+[100%] Built target openpose_wrapper
+Built target openpose_lib
+```
+16. Test by using the webcam real-time video
+```
+cd ..
+./build/examples/openpose/openpose.bin
+```
+
 
 -----------------
 
