@@ -1,4 +1,4 @@
-# Installation of OpenPose + Caffe in M1 chip Mac
+# Installation of OpenPose + Caffe + Python API in M1 chip Mac
 
 <div align="center">
     <img src=".github/Logo_main_black.png" width="300">
@@ -6,6 +6,8 @@
 
 ## Overview
 This repository was created for the only purpose of showing a successful method for installing the CMU Perceptual Computing Lab's [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose), commit `1d95a1a67f543ac76e6519941a3cfea55e2d5743 (openpose/master)` at the moment of creation, in `CPU_ONLY` mode with the linked Caffe version in a MacOS computer with M1 chip.
+
+**Update 2024/06/05 ** Python API could also be build, without making any modification. Just check the box of `BUILD_PYTHON` when you open the Cmake GUI.
 
 Caffe's documentation requests a Python 2 version, but the usual environment manager on a Mac with an M1 chip doesn't support setting a 2.X version, leaving only the 3.X option. This demands the changes of some files.
 Additionally, the CMake files provided in the openpose repository (including caffe) did not come with the C++ compiler definitions and flags suitable for a smooth installation. Not finding the suitable C++ version while compiling the files produced various errors and time-consuming repairs during the build process. The highest C++ version required was C++17, therefore this version was set as default for the complete build.
@@ -28,12 +30,13 @@ This repository and Caffe are a copy of the OpenPose repository and the containe
 1. Creation of virtual environment. This assumes you already have a python environment manager. I work with miniforge3 and following the steps [here](https://github.com/mrdbourke/m1-machine-learning-test#how-to-setup-a-tensorflow-environment-on-m1-m1-pro-m1-max-using-miniforge-shorter-version)
 ```
 conda create -n openpose python=3.9
+```
+```
 conda activate openpose
 ```
 2. Download models from alternative [source](https://github.com/CMU-Perceptual-Computing-Lab/openpose/issues/1602#issuecomment-641653411)
-3. Open your terminal and clone this repository in the folder you wish
+3. Open terminal in the folder you wish and clone this repository
 ```
-cd your/folder/path
 git clone https://github.com/franzcrs/openpose-with-caffe-for-MacM1
 ```
 4. Copy the models in the corresponding folder (face, hand, pose) inside the repository `models/` folder
@@ -47,13 +50,15 @@ brew update
 ```
 brew install --cask cmake
 ```
-8. Install required dependencies in modified install_deps.sh
+8. Enter the cloned repo and install the required dependencies in modified install_deps.sh
+```
+cd openpose-with-caffe-for-MacM1
+```
 ```
 bash scripts/osx/install_deps.sh
 ```
-9. Enter the repo folder and create a build folder
+9. Create a build folder
 ```
-cd openpose-with-caffe-for-MacM1
 mkdir build
 cd build
 ```
@@ -64,7 +69,7 @@ cmake-gui ..
 11. Make sure the folder paths point to the repository folder and the build folder. Image is example.
         <img src=".github/media/installation/cmake_im_1.png" width="800">
 
-12. Make sure BUILD_CAFFE is checked and GPU_MODE is set as CPU_ONLY. Click on Configure. Then with the default options click Finish. The monitor should show:
+12. Make sure `BUILD_CAFFE` is checked and `GPU_MODE` is set as `CPU_ONLY`. Optionally you can check `BUILD_PYTHON` to build the Python API (tested). Click on Configure. Then with the default options click Finish. The monitor should show:
 ```
 Configuring done (x.xs)
 ``` 
